@@ -1,0 +1,87 @@
+Question 1
+
+mysql>  SELECT name,rollno,DATE_FORMAT(FROM_DAYS(DATEDIFF(CURDATE(),dob)), '%Y')+0 AS age FROM student WHERE (DATE_FORMAT(FROM_DAYS(DATEDIFF(CURDATE(),dob)), '%Y')+0)>=18 ORDER BY dob ASC;
++---------+--------+------+
+| name    | rollno | age  |
++---------+--------+------+
+| kane    |     11 |   22 |
+| dave    |     27 |   22 |
+| dwayne  |     33 |   21 |
+| carol   |      7 |   21 |
+| jean    |     46 |   21 |
+| tom     |     50 |   20 |
+| randy   |     56 |   20 |
+| natasha |     52 |   20 |
+| gamora  |     34 |   20 |
+| wanda   |     21 |   20 |
+| john    |     58 |   19 |
++---------+--------+------+
+11 rows in set (0.00 sec)
+
+
+Question 2
+
+mysql>  SELECT male_count.male, female_count.female FROM(SELECT count(gender)male FROM Student WHERE gender = 'M' and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), dob)), '%Y')+0 >= 20)male_count, (SELECT count(gender)female FROM Student WHERE gender = 'F' AND DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), dob)), '%Y')+0 >= 20)female_count;
++------+--------+
+| male | female |
++------+--------+
+|    5 |      5 |
++------+--------+
+1 row in set (0.00 sec)
+
+Question 3
+
+mysql> SELECT count(name) AS more_than_math FROM student WHERE math>(SELECT sum(math+sci+eng+social+sports)/5);
++----------------+
+| more_than_math |
++----------------+
+|              5 |
++----------------+
+1 row in set (0.00 sec)
+
+Question 4
+
+mysql> SELECT directs.south, directw.west FROM (SELECT count(pincode)south FROM Campus WHERE pincode LIKE '5%' or pincode LIKE '6%')directs, (SELECT count(pincode)west FROM Campus WHERE pincode LIKE '3%' or pincode LIKE '4%')directw;
++-------+------+
+| south | west |
++-------+------+
+|     4 |    2 |
++-------+------+
+1 row in set (0.01 sec)
+
+Question 5
+
+
+mysql>  SELECT name AS 2nd_student FROM student ORDER BY (math+sci+eng+social+sports)/5 DESC LIMIT 1,1;
++-------------+
+| 2nd_student |
++-------------+
+| jean        |
++-------------+
+1 row in set (0.00 sec)
+
+
+Question 6
+
+
+mysql> SELECT name,rollno AS rno, (math+sci+eng+social+sports)/5 AS avg_marks,
+    -> case WHEN (math+sci+eng+social+sports)/5 <(SELECT avg(student_avg) AS class_avg FROM(SELECT (math+sci+eng+social+sports)/5 AS student_avg FROM student) AS avgs) 
+    -> THEN 'Low' ELSE 'High' END AS score_status 
+    -> FROM student;
++---------+------+-----------+--------------+
+| name    | rno  | avg_marks | score_status |
++---------+------+-----------+--------------+
+| dwayne  |   33 |   86.8000 | High         |
+| john    |   58 |   79.8000 | High         |
+| dave    |   27 |   78.6000 | Low          |
+| randy   |   56 |   74.8000 | Low          |
+| kane    |   11 |   72.6000 | Low          |
+| tom     |   50 |   75.4000 | Low          |
+| carol   |    7 |   73.2000 | Low          |
+| wanda   |   21 |   60.4000 | Low          |
+| natasha |   52 |   89.6000 | High         |
+| gamora  |   34 |   87.0000 | High         |
+| jean    |   46 |   87.6000 | High         |
++---------+------+-----------+--------------+
+11 rows in set (0.00 sec)
+
