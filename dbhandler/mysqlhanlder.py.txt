@@ -1,0 +1,99 @@
+import mysql.connector
+
+cnx=mysql.connector.connect(user='root',password='1234',database='userdb')
+
+cursor=cnx.cursor()
+
+ 
+
+class Mysqlhandler:
+
+    def _init_(self):
+
+        pass
+
+    def add_user(self):
+
+        cursor = cnx.cursor()
+
+ 
+
+        sql1 = ("INSERT INTO user_data(name,phno,dob) VALUES('soundar', '8374014052','2000/10/23')")
+
+        cursor.execute(sql1)
+
+ 
+
+        cnx.commit()
+
+ 
+
+        print(cursor.rowcount, "record inserted.")
+
+ 
+
+    def update_user(self) :
+
+        cursor = cnx.cursor()
+
+ 
+
+        #sql1 = ("UPDATE table user_data VALUES('pavan', '8374014052','2000/10/23') WHERE phno = '8374014052")
+
+        sql1 = "UPDATE user_data SET name = 'pavan' WHERE phno = '8374014052'"
+
+        cursor.execute(sql1)
+
+ 
+
+        cnx.commit()
+
+ 
+
+        print(cursor.rowcount, "record inserted.")
+
+    def delete_user(self):
+
+        cursor = cnx.cursor()
+
+ 
+
+        #sql1 = ("UPDATE table user_data VALUES('pavan', '8374014052','2000/10/23') WHERE phno = '8374014052")
+
+        sql1 = "DELETE FROM user_data WHERE name = 'pavan'"
+
+        cursor.execute(sql1)
+
+ 
+
+        cnx.commit()
+
+ 
+
+        print(cursor.rowcount, "record inserted.")
+
+    def display_users(self):
+
+        cursor = cnx.cursor()
+
+ 
+
+        sql1 = ("select * from user_data")
+
+        cursor.execute(sql1)
+
+ 
+
+        print(list(cursor))
+
+ 
+
+if __name__=="__main__":
+
+    myl = Mysqlhandler()    
+
+    myl.update_user() 
+
+    myl.delete_user()   
+
+    myl.display_users()
